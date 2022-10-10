@@ -80,7 +80,8 @@ impl App for Model {
         s.push_str("\n");
         self.generate_modeline(&mut s);
 
-        s.push_str(&format!("Line/Col: {}/{}", self.line, self.column));
+        let location_string = format!("Line/Col: {}/{}", self.line, self.column);
+        s.push_str(&format!("{:>100}", location_string));
 
         s
     }
@@ -102,7 +103,7 @@ impl Model {
         if self.mode == Mode::Insert {
             s.push_str("--INSERT--");
         } else if self.mode == Mode::Command {
-            s.push_str(&format!(":{}", self.command));
+            s.push_str(&format!(":{:<9}", self.command));
         } else {
             s.push_str("          ");
         }
