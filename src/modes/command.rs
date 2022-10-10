@@ -44,24 +44,30 @@ impl Model {
 
     fn run_command(&mut self) -> Option<Command> {
         match self.command.as_str() {
-            ":q" | ":qu" | ":qui" | ":quit" => Some(Box::new(command::quit)),
-            ":w" | ":wr" | ":wri" | ":writ" | ":write" => {
+            ":q" | ":qu" | ":qui" | ":quit" => self.quit(),
+            ":w" | ":wr" | ":wri" | ":writ" | ":write" => self.save(),
+            ":wq" => {
                 self.save();
-
-                self.command.clear();
-                self.mode = Mode::Normal;
-
-                None
+                self.quit()
             }
             _ => None,
         }
     }
 
-    fn save(&self) {
+    fn quit(&mut self) -> Option<Command> {
+        Some(Box::new(command::quit))
+    }
+
+    fn save(&mut self) -> Option<Command> {
         let mut contents = self.contents.join("\n");
         if !contents.ends_with("\n") {
             contents.push_str("\n");
         }
         fs::write(&self.filename, contents.as_str()).unwrap();
+
+        self.command.clear();
+        self.mode = Mode::Normal;
+
+        None
     }
 }
