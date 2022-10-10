@@ -58,7 +58,7 @@ impl Model {
             line: 1,
             column: 1,
             mode: Mode::Normal,
-            filename: "src/main.rs".to_string(),
+            filename: "test.txt".to_string(),
             contents: vec![],
             command: String::new(),
         }
