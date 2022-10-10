@@ -13,8 +13,15 @@ impl Model {
             }
         }
 
-        if let KeyCode::Esc = key_event.code {
-            self.mode = Mode::Normal;
+        match key_event.code {
+            KeyCode::Esc => {
+                self.mode = Mode::Normal;
+            }
+            KeyCode::Char(c) => {
+                let line = &mut self.contents[self.line - 1];
+                line.insert(self.column - 1, c);
+            }
+            _ => {}
         }
 
         None
