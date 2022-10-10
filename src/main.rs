@@ -15,12 +15,14 @@ struct Model {
     mode: Mode,
     filename: String,
     contents: Vec<String>,
+    command: String,
 }
 
 #[derive(Eq, PartialEq, Debug)]
 enum Mode {
     Normal,
     Insert,
+    Command,
 }
 
 impl App for Model {
@@ -39,6 +41,14 @@ impl App for Model {
                             self.line -= 1;
                         }
                     }
+                    KeyCode::Down | KeyCode::Char('j') => {
+                        if self.line < self.contents.len() - 1 {
+                            self.line += 1;
+                        }
+                    }
+                    KeyCode::Char(':') => {
+                        self.mode = Mode::Command;
+                    }
                     _ => {}
                 }
             }
@@ -48,6 +58,35 @@ impl App for Model {
                     if let KeyCode::Char('c') = key_event.code {
                         self.mode = Mode::Normal;
                     }
+                }
+
+                if let KeyCode::Esc = key_event.code {
+                    self.mode = Mode::Normal;
+                }
+            }
+
+            if self.mode == Mode::Command {
+                if let KeyModifiers::CONTROL = key_event.modifiers {
+                    match key_event.code {
+                        KeyCode::Char('u') => self.command.clear(),
+                        KeyCode::Char('c') => {
+                            self.command.clear();
+                            self.mode = Mode::Normal;
+                        }
+                        KeyCode::Backspace => {
+                            self.command.pop();
+                        }
+                        _ => {}
+                    }
+                }
+
+                match key_event.code {
+                    KeyCode::Char(c) => self.command.push(c),
+                    KeyCode::Esc => {
+                        self.command.clear();
+                        self.mode = Mode::Normal;
+                    }
+                    _ => {}
                 }
             }
         }
@@ -61,15 +100,23 @@ impl App for Model {
         let mut s = line.to_string();
 
         s.push_str("\n");
-        if self.mode == Mode::Insert {
-            s.push_str("--INSERT--");
-        } else {
-            s.push_str("          ");
-        }
+        self.generate_modeline(&mut s);
 
         s.push_str(&format!("Line/Col: {}/{}", self.line, self.column));
 
         s
+    }
+}
+
+impl Model {
+    fn generate_modeline(&self, s: &mut String) {
+        if self.mode == Mode::Insert {
+            s.push_str("--INSERT--");
+        } else if self.mode == Mode::Command {
+            s.push_str(&format!(":{}", self.command));
+        } else {
+            s.push_str("          ");
+        }
     }
 }
 
@@ -89,6 +136,7 @@ fn main() {
         mode: Mode::Normal,
         filename: "src/main.rs".to_string(),
         contents: vec![],
+        command: String::new(),
     };
 
     let contents = match open_file(&app.filename) {
