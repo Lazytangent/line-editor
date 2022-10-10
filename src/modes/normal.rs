@@ -1,10 +1,10 @@
 use rustea::{
     command,
-    crossterm::event::{KeyEvent, KeyCode, KeyModifiers},
+    crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
     Command,
 };
 
-use crate::model::{Model, Mode};
+use crate::model::{Mode, Model};
 
 impl Model {
     pub fn handle_normal(&mut self, key_event: &KeyEvent) -> Option<Command> {

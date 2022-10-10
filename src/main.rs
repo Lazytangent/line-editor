@@ -1,4 +1,7 @@
-use line_editor::{model::{Model, Mode}, utils};
+use line_editor::{
+    model::{Mode, Model},
+    utils,
+};
 
 fn main() {
     let mut app = Model {
