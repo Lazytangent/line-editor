@@ -25,6 +25,16 @@ impl Model {
                     self.line += 1;
                 }
             }
+            KeyCode::Left | KeyCode::Char('h') => {
+                if self.column > 1 {
+                    self.column -= 1;
+                }
+            }
+            KeyCode::Right | KeyCode::Char('l') => {
+                if self.column < self.contents[self.line - 1].len() {
+                    self.column += 1;
+                }
+            }
             KeyCode::Char(':') => {
                 self.mode = Mode::Command;
             }

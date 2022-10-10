@@ -73,6 +73,7 @@ impl App for Model {
         let mut s = line.to_string();
 
         s.push_str("\n");
+        self.generate_cursorline(&mut s);
         s.push_str("\n");
         self.generate_modeline(&mut s);
 
@@ -91,5 +92,16 @@ impl Model {
         } else {
             s.push_str("          ");
         }
+    }
+
+    fn generate_cursorline(&self, s: &mut String) {
+        let mut cursorline = String::new();
+
+        for _ in 0..(self.column - 1) {
+            cursorline.push_str(" ");
+        }
+
+        cursorline.push_str("^");
+        s.push_str(&cursorline);
     }
 }
