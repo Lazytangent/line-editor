@@ -52,6 +52,10 @@ impl Model {
             KeyCode::Char('i') => {
                 self.mode = Mode::Insert;
             }
+            KeyCode::Char('a') => {
+                self.column += 1;
+                self.mode = Mode::Insert;
+            }
             _ => {}
         };
 
