@@ -1,7 +1,4 @@
-use rustea::{
-    crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
-    App, Command, Message,
-};
+use rustea::{crossterm::event::KeyEvent, App, Command, Message};
 
 pub struct Model {
     pub line: usize,
@@ -27,43 +24,11 @@ impl App for Model {
             }
 
             if self.mode == Mode::Insert {
-                if let KeyModifiers::CONTROL = key_event.modifiers {
-                    if let KeyCode::Char('c') = key_event.code {
-                        self.mode = Mode::Normal;
-                    }
-                }
-
-                if let KeyCode::Esc = key_event.code {
-                    self.mode = Mode::Normal;
-                }
+                return self.handle_insert(key_event);
             }
 
             if self.mode == Mode::Command {
-                if let KeyModifiers::CONTROL = key_event.modifiers {
-                    match key_event.code {
-                        KeyCode::Char('u') => self.command.clear(),
-                        KeyCode::Char('c') => {
-                            self.command.clear();
-                            self.mode = Mode::Normal;
-                        }
-                        _ => {}
-                    }
-                }
-
-                match key_event.code {
-                    KeyCode::Char(c) => self.command.push(c),
-                    KeyCode::Esc => {
-                        self.command.clear();
-                        self.mode = Mode::Normal;
-                    }
-                    KeyCode::Backspace => {
-                        self.command.pop();
-                        if self.command.len() == 0 {
-                            self.mode = Mode::Normal;
-                        }
-                    }
-                    _ => {}
-                }
+                return self.handle_command(key_event);
             }
         }
 
