@@ -1,17 +1,7 @@
-use line_editor::{
-    model::{Mode, Model},
-    utils,
-};
+use line_editor::{model::Model, utils};
 
 fn main() {
-    let mut app = Model {
-        line: 1,
-        column: 1,
-        mode: Mode::Normal,
-        filename: "src/main.rs".to_string(),
-        contents: vec![],
-        command: String::new(),
-    };
+    let mut app = Model::new();
 
     let contents = match utils::open_file(&app.filename) {
         Ok(c) => c,

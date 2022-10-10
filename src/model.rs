@@ -84,6 +84,17 @@ impl App for Model {
 }
 
 impl Model {
+    pub fn new() -> Self {
+        Model {
+            line: 1,
+            column: 1,
+            mode: Mode::Normal,
+            filename: "src/main.rs".to_string(),
+            contents: vec![],
+            command: String::new(),
+        }
+    }
+
     fn generate_modeline(&self, s: &mut String) {
         if self.mode == Mode::Insert {
             s.push_str("--INSERT--");
