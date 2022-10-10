@@ -46,9 +46,6 @@ impl App for Model {
                             self.command.clear();
                             self.mode = Mode::Normal;
                         }
-                        KeyCode::Backspace => {
-                            self.command.pop();
-                        }
                         _ => {}
                     }
                 }
@@ -58,6 +55,12 @@ impl App for Model {
                     KeyCode::Esc => {
                         self.command.clear();
                         self.mode = Mode::Normal;
+                    }
+                    KeyCode::Backspace => {
+                        self.command.pop();
+                        if self.command.len() == 0 {
+                            self.mode = Mode::Normal;
+                        }
                     }
                     _ => {}
                 }
