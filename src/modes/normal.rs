@@ -18,11 +18,21 @@ impl Model {
             KeyCode::Up | KeyCode::Char('k') => {
                 if self.line > 1 {
                     self.line -= 1;
+                    let current_line_length = self.contents[self.line - 1].len();
+
+                    if current_line_length != 0 && current_line_length < self.column {
+                        self.column = current_line_length;
+                    }
                 }
             }
             KeyCode::Down | KeyCode::Char('j') => {
                 if self.line < self.contents.len() - 1 {
                     self.line += 1;
+                    let current_line_length = self.contents[self.line - 1].len();
+
+                    if current_line_length != 0 && current_line_length < self.column {
+                        self.column = current_line_length;
+                    }
                 }
             }
             KeyCode::Left | KeyCode::Char('h') => {
