@@ -20,6 +20,7 @@ impl Model {
             KeyCode::Char(c) => {
                 let line = &mut self.contents[self.line - 1];
                 line.insert(self.column - 1, c);
+                self.column += 1;
             }
             _ => {}
         }
