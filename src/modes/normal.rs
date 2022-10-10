@@ -47,6 +47,7 @@ impl Model {
             }
             KeyCode::Char(':') => {
                 self.mode = Mode::Command;
+                self.command.push(':');
             }
             _ => {}
         };

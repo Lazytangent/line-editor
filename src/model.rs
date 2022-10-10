@@ -68,7 +68,7 @@ impl Model {
         if self.mode == Mode::Insert {
             s.push_str("--INSERT--");
         } else if self.mode == Mode::Command {
-            s.push_str(&format!(":{:<9}", self.command));
+            s.push_str(&format!("{:<10}", self.command));
         } else {
             s.push_str("          ");
         }
