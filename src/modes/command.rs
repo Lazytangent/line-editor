@@ -1,3 +1,5 @@
+use std::fs;
+
 use rustea::{
     command,
     crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
@@ -40,11 +42,26 @@ impl Model {
         None
     }
 
-    fn run_command(&self) -> Option<Command> {
-        if self.command == ":q" {
-            return Some(Box::new(command::quit));
-        }
+    fn run_command(&mut self) -> Option<Command> {
+        match self.command.as_str() {
+            ":q" | ":qu" | ":qui" | ":quit" => Some(Box::new(command::quit)),
+            ":w" | ":wr" | ":wri" | ":writ" | ":write" => {
+                self.save();
 
-        None
+                self.command.clear();
+                self.mode = Mode::Normal;
+
+                None
+            }
+            _ => None,
+        }
+    }
+
+    fn save(&self) {
+        let mut contents = self.contents.join("\n");
+        if !contents.ends_with("\n") {
+            contents.push_str("\n");
+        }
+        fs::write(&self.filename, contents.as_str()).unwrap();
     }
 }
