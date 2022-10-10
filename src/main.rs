@@ -1,11 +1,12 @@
-use std::{fs::File, io::{self, BufReader, BufRead}};
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader},
+};
 
 use rustea::{
     command,
     crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
-    App,
-    Command,
-    Message,
+    App, Command, Message,
 };
 
 struct Model {
