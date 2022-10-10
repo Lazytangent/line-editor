@@ -17,6 +17,10 @@ impl Model {
             KeyCode::Esc => {
                 self.mode = Mode::Normal;
             }
+            KeyCode::Backspace => {
+                let line = &mut self.contents[self.line - 1];
+                line.remove(self.column - 1);
+            }
             KeyCode::Char(c) => {
                 let line = &mut self.contents[self.line - 1];
                 line.insert(self.column - 1, c);
