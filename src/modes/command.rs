@@ -41,7 +41,7 @@ impl Model {
     }
 
     fn run_command(&self) -> Option<Command> {
-        if self.command.as_str() == ":q" {
+        if self.command == ":q" {
             return Some(Box::new(command::quit));
         }
 
