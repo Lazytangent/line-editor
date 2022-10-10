@@ -1,4 +1,5 @@
 use rustea::{
+    command,
     crossterm::event::{KeyCode, KeyEvent, KeyModifiers},
     Command,
 };
@@ -30,7 +31,18 @@ impl Model {
                     self.mode = Mode::Normal;
                 }
             }
+            KeyCode::Enter => {
+                return self.run_command();
+            }
             _ => {}
+        }
+
+        None
+    }
+
+    fn run_command(&self) -> Option<Command> {
+        if self.command.as_str() == ":q" {
+            return Some(Box::new(command::quit));
         }
 
         None
